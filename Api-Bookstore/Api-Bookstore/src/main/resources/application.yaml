@@ -1,13 +1,16 @@
 spring:
-  # C?u hình k?t n?i Database MySQL
   datasource:
     url: jdbc:mysql://localhost:3306/bookstore-db
     username: root
-    password:  # <-- Nh? thay m?t kh?u c?a b?n vào ?ây
+    password:
 
-  # C?u hình JPA/Hibernate
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     database-platform: org.hibernate.dialect.MySQLDialect
+
+bookstore:
+      app:
+        jwtSecret: aVeryLongAndSecureSecretKeyForOurBookstoreApplicationThatIsHardToGuess
+        jwtExpirationMs: 86400000

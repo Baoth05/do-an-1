@@ -1,0 +1,69 @@
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-item-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Khoảng cách giữa "Chào" và "Đăng xuất" */
+}
+
+.nav-username {
+    color: #f0f0f0;
+    font-weight: 500;
+}
+
+.nav-link, .nav-link-button {
+    color: white;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link-button {
+    background-color: #007bff;
+}
+
+.nav-link:hover, .nav-link-button:hover {
+    background-color: #0056b3;
+}
+
+/* Ghi đè CSS cũ (nếu có) */
+body {
+    background-color: #f9f9f9; /* Đổi màu nền body 1 chút */
+}  
+/* ... (giữ nguyên code cũ) ... */
+
+.nav-item-guest {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Khoảng cách giữa 2 nút */
+}
+
+/* Sửa lại .nav-link một chút nếu nó là <li> */
+.nav-item {
+    list-style: none; /* Bỏ dấu chấm tròn của <li> */
+} 

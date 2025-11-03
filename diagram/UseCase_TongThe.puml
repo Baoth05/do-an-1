@@ -1,0 +1,68 @@
+@startuml
+left to right direction
+
+' Khai báo 2 tác nhân
+actor Admin
+actor Customer
+
+' Gom nhóm các chức năng
+rectangle "Website Bán Sách" {
+    
+    ' --- Chức năng Customer ---
+    rectangle "Giai đoạn 1 (Customer)" #LightYellow {
+        (Đăng ký)
+        (Đăng nhập)
+        (Đăng xuất)
+        (Xem sách)
+        (Xem chi tiết sách)
+        (Quản lý Giỏ hàng)
+        (Đặt hàng)
+        (Thanh toán)
+    }
+
+    rectangle "Giai đoạn 2 (Customer)" #LightCyan {
+        (Tìm kiếm)
+        (Quản lý thông tin cá nhân)
+        (Xem lịch sử mua hàng)
+        (Liên hệ và Hỗ trợ)
+        (Đánh giá & Bình luận)
+    }
+
+    ' --- Chức năng Admin ---
+    rectangle "Giai đoạn 1 (Admin)" #LightYellow {
+        (Quản lý Sách)
+    }
+
+    rectangle "Giai đoạn 2 (Admin)" #LightCyan {
+        (Quản lý Đơn hàng)
+        (Quản lý Khách hàng)
+        (Xem Thống kê)
+        (Quản lý Thể loại)
+    }
+
+    ' === Kết nối Customer ===
+    Customer -- (Đăng ký)
+    Customer -- (Đăng nhập)
+    Customer -- (Đăng xuất)
+    Customer -- (Xem sách)
+    (Xem sách) <.. (Xem chi tiết sách) : <<extend>>
+    Customer -- (Quản lý Giỏ hàng)
+    Customer -- (Đặt hàng)
+    (Đặt hàng) ..> (Thanh toán) : <<include>>
+    (Đặt hàng) ..> (Quản lý Giỏ hàng) : <<include>>
+
+    Customer -- (Tìm kiếm)
+    Customer -- (Quản lý thông tin cá nhân)
+    Customer -- (Xem lịch sử mua hàng)
+    Customer -- (Liên hệ và Hỗ trợ)
+    Customer -- (Đánh giá & Bình luận)
+
+    ' === Kết nối Admin ===
+    Admin -- (Quản lý Sách)
+    Admin -- (Quản lý Đơn hàng)
+    Admin -- (Quản lý Khách hàng)
+    Admin -- (Xem Thống kê)
+    Admin -- (Quản lý Thể loại)
+}
+
+@enduml
