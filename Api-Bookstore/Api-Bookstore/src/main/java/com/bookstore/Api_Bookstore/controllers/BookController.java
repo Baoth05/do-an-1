@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.module.ResolutionException;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/books")
 public class BookController {
@@ -24,7 +23,7 @@ public class BookController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<List<Book>> getAllBooks(){// ResponseEntity  Đây là một lớp đặc biệt của Spring Boot dùng để đóng gói toàn bộ phản hồi HTTP trả về cho client
         List<Book> books = bookRepository.findAll();
 
@@ -33,13 +32,12 @@ public class BookController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Book> getBookById(@PathVariable Long id){
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy sách với id:" + id));
         return ResponseEntity.ok(book);
     }
-
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public  ResponseEntity<Book> createBook(@RequestBody Book newBook){
@@ -70,7 +68,17 @@ public class BookController {
                 .orElseThrow(()-> new NotFoundException("Không tìm thấy sách với id:" +id));
         bookRepository.delete(book);
         return ResponseEntity.noContent().build();
+    }@GetMapping("/search")
+    @PreAuthorize("permitAll()") // Ai cũng được tìm kiếm
+    public ResponseEntity<List<Book>> searchBooks(@RequestParam("query") String query) {
+
+        // Dùng hàm mới của Repository để tìm
+        List<Book> books = bookRepository.findByTitleContainingIgnoreCase(query);
+
+        // Trả về danh sách (kể cả khi nó rỗng)
+        return new ResponseEntity<>(books, HttpStatus.OK);
     }
+
 
 
 }

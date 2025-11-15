@@ -56,4 +56,70 @@
     color: #666;
     padding: 0 1rem 0.75rem;
     margin: 0;
-}   
+}  
+/* ... (giữ nguyên code cũ) ... */
+
+/* Nút bấm của Admin */
+.admin-actions {
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    display: flex;
+    gap: 10px; /* Khoảng cách nếu có nhiều nút (vd: Sửa) */
+}
+
+.btn-delete {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    
+    background-color: #f44336; /* Màu đỏ */
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f; /* Đỏ đậm hơn */
+} 
+/* ... (giữ nguyên .btn-delete) ... */
+
+.btn-edit {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Bỏ gạch chân */
+    
+    background-color: #ffc107; /* Màu vàng */
+    color: #333; /* Chữ đen */
+}
+
+.btn-edit:hover {
+    background-color: #e0a800;
+}
+/* ... (code cũ .admin-actions, .btn-edit, .btn-delete giữ nguyên) ... */
+
+.user-actions {
+    margin-bottom: 10px; /* Tạo khoảng cách với nút Sửa/Xóa bên dưới */
+}
+
+.btn-add-to-cart {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff; /* Màu xanh dương */
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-add-to-cart:hover {
+    background-color: #0056b3; /* Xanh đậm hơn */
+}

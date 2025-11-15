@@ -1,0 +1,28 @@
+/* Chúng ta không cần code CSS ở đây 
+  vì component Register.js đang dùng 
+  className="form-container" và "form-group"
+  mà 2 class này đã được định nghĩa trong 
+  CreateBook.css và Lo#ebccd1 (được load chung)
+
+  Chúng ta chỉ thêm 2 class message mới:
+*/
+
+.message-error {
+    color: #d9534f;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.message-info {
+    color: #31708f; /* Màu xanh thông báo */
+    background-color: #d9edf7;
+    border: 1px solid #bce8f1;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+    text-align: center;
+}

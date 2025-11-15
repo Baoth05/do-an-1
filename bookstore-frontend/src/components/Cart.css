@@ -1,0 +1,129 @@
+.cart-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.cart-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.cart-item {
+    display: flex;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    align-items: center;
+}
+
+.cart-item-image {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 1.5rem;
+}
+
+.cart-item-details {
+    flex-grow: 1; /* Chiếm phần lớn không gian */
+}
+
+.cart-item-details h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #007bff;
+}
+
+.cart-item-details p {
+    margin: 0.25rem 0;
+    color: #555;
+}
+
+.cart-item-actions {
+    margin-left: 1rem;
+}
+
+.btn-remove {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    background-color: #dc3545; /* Màu đỏ */
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-remove:hover {
+    background-color: #c82333;
+}
+
+.cart-summary {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #eee;
+    text-align: right;
+}
+
+.cart-summary h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.btn-checkout {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745; /* Màu xanh lá */
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-checkout:hover {
+    background-color: #218838;
+}
+/* ... (code cũ .btn-remove, .cart-summary... giữ nguyên) ... */
+
+/* Style cho cụm Tăng/Giảm số lượng */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.btn-quantity {
+    background-color: #007bff; /* Xanh dương */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    line-height: 1; /* Căn giữa dấu +/- */
+    transition: background-color 0.3s ease;
+}
+
+.btn-quantity:hover {
+    background-color: #0056b3;
+}
+
+.quantity-display {
+    padding: 0 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-width: 30px; /* Đảm bảo nó không bị giật khi số thay đổi */
+    text-align: center;
+}

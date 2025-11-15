@@ -1,40 +1,43 @@
 import React, { useState, useEffect } from "react";
-// 1. IMPORT LINK
-import { Link } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import BookService from "../services/BookService";
 import { useCart } from '../context/CartContext'; 
 import AuthService from '../services/AuthService'; 
 import './Home.css'; 
 
-const Home = () => {
+const SearchResults = () => {
+    const [searchParams] = useSearchParams();
+    const query = searchParams.get('q'); 
+
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
+    
     const { addToCart } = useCart();
     const currentUser = AuthService.getCurrentUser();
     const showAdminBoard = currentUser?.roles?.includes("ROLE_ADMIN");
 
     useEffect(() => {
-        // Gọi API (đã bỏ Token)
-        BookService.getAllBooks().then(
-            (response) => {
-                setBooks(response.data);
-                setLoading(false);
-            },
-            (error) => {
-                const resMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-                setMessage(resMessage);
-                setLoading(false);
-            }
-        );
-    }, []); // Chỉ chạy 1 lần
+        if (query) {
+            setLoading(true);
+            BookService.searchBooks(query).then(
+                (response) => {
+                    setBooks(response.data);
+                    setLoading(false);
+                },
+                (error) => {
+                    const resMessage =
+                        (error.response?.data?.message) ||
+                        error.message ||
+                        error.toString();
+                    setMessage(resMessage);
+                    setLoading(false);
+                }
+            );
+        }
+    }, [query]); 
 
-    // Hàm Xóa sách
+    // === 1. COPY HÀM NÀY TỪ HOME.JS ===
     const handleDelete = (id) => {
         if (window.confirm('Bạn có chắc muốn xóa cuốn sách này?')) {
             BookService.deleteBook(id).then(
@@ -43,7 +46,6 @@ const Home = () => {
                     setBooks(books.filter((book) => book.id !== id));
                 },
                 (error) => {
-                    // Xử lý lỗi khi xóa
                     const resMessage = (error.response?.data?.message) || error.message || error.toString();
                     alert("Lỗi khi xóa: " + resMessage);
                 }
@@ -51,14 +53,15 @@ const Home = () => {
         }
     };
 
-    // Hàm Thêm vào giỏ
+    // === 2. COPY HÀM NÀY TỪ HOME.JS ===
     const handleAddToCart = (book) => {
         addToCart(book);
         alert('Đã thêm "' + book.title + '" vào giỏ hàng!');
     };
 
+
     if (loading) {
-        return <div className="loading"><h2>Đang tải danh sách sách...</h2></div>;
+        return <div className="loading"><h2>Đang tìm sách...</h2></div>;
     }
 
     if (message) {
@@ -67,10 +70,17 @@ const Home = () => {
 
     return (
         <div className="book-list-container">
+            <h2 className="search-results-title">
+                Kết quả tìm kiếm cho: "{query}"
+            </h2>
+
+            {books.length === 0 && !loading && (
+                <p>Không tìm thấy cuốn sách nào khớp với từ khóa của bạn.</p>
+            )}
+
+            {/* (Phần .map() y hệt Home.js) */}
             {books.map((book) => (
                 <div className="book-card" key={book.id}>
-                    
-                    {/* 2. BỌC ẢNH BẰNG LINK */}
                     <Link to={`/book/${book.id}`}>
                         <img 
                             src={book.imageUrl || 'https://via.placeholder.com/150x220.png?text=No+Image'} 
@@ -78,16 +88,13 @@ const Home = () => {
                             className="book-card-image"
                         />
                     </Link>
-
                     <div className="book-card-content">
-                        {/* 3. BỌC TIÊU ĐỀ BẰNG LINK */}
                         <Link to={`/book/${book.id}`} className="book-card-title-link">
                             <h3 className="book-card-title">{book.title}</h3>
                         </Link>
                         <p className="book-card-author">Tác giả: {book.author}</p>
                         <p className="book-card-price">{book.price.toLocaleString('vi-VN')} VND</p>
                         
-                        {/* (Các nút giữ nguyên) */}
                         <div className="book-card-actions">
                             <button className="btn-add" onClick={() => handleAddToCart(book)}>
                                 Thêm vào giỏ
@@ -106,4 +113,5 @@ const Home = () => {
     );
 };
 
-export default Home;
+// (Dòng export của bạn đã đúng)
+export default SearchResults;

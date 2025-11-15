@@ -67,3 +67,29 @@ body {
 .nav-item {
     list-style: none; /* Bỏ dấu chấm tròn của <li> */
 } 
+/* ... (code cũ giữ nguyên) ... */
+
+/* Style cho icon giỏ hàng và số lượng (badge) */
+.nav-cart {
+    position: relative;
+    padding-right: 15px; /* Thêm chút đệm */
+}
+
+.badge-cart {
+    position: absolute;
+    top: -8px; /* Đẩy lên trên */
+    right: -2px; /* Đẩy qua phải */
+    
+    background-color: #dc3545; /* Màu đỏ */
+    color: white;
+    
+    border-radius: 50%; /* Bo tròn */
+    padding: 3px 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    
+    /* Chống méo khi số là 1 hoặc 10 */
+    min-width: 20px; 
+    text-align: center;
+    box-sizing: border-box;
+}

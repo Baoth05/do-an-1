@@ -1,0 +1,66 @@
+/* Dùng chung style nền của Cart */
+.history-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.history-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.order-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* Đảm bảo bo tròn đẹp */
+}
+
+.order-header {
+    background-color: #f1f1f1;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Cho responsive */
+}
+
+.order-header h3 {
+    margin: 0;
+    color: #007bff;
+}
+
+.order-header p {
+    margin: 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.order-header strong {
+    font-size: 1.2rem;
+    color: #28a745; /* Màu xanh lá */
+}
+
+.order-items-list {
+    padding: 1.5rem;
+}
+
+.order-items-list h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 0.5rem;
+}
+
+.order-item p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+}

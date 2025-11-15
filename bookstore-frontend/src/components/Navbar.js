@@ -1,45 +1,68 @@
-import React from 'react'; // 1. Xóa useState, useEffect
-import { Link } from 'react-router-dom'; // 2. Xóa useNavigate
-// 3. Xóa AuthService
+import React from 'react'; 
+import { Link } from 'react-router-dom'; 
+import { useCart } from '../context/CartContext'; 
+import SearchBar from './SearchBar';
 import './Navbar.css';
 
-// 4. Nhận props từ App.js
 const Navbar = ({ currentUser, onLogout }) => {
-
-    // 5. XÓA tất cả state và useEffect (vì App.js đã lo)
     
-    // 6. Tính toán showAdminBoard dựa trên prop
-    // (Dùng ?. gọi là "optional chaining" để an toàn tuyệt đối)
     const showAdminBoard = currentUser?.roles?.includes("ROLE_ADMIN");
+    const { cartItems } = useCart();
+    const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
 
     return (
         <nav className="navbar">
             <Link to={"/home"} className="navbar-brand">
                 Bookstore
             </Link>
+            <SearchBar />
 
             <div className="navbar-nav">
+                {/* === PHẦN CỦA ADMIN === */}
                 {showAdminBoard && (
-                    <li className="nav-item">
-                        <Link to={"/add-book"} className="nav-link">
-                            Thêm Sách Mới
-                        </Link>
-                    </li>
+                    <> {/* Dùng Fragment <>...</> để bọc các link Admin */}
+                        <li className="nav-item">
+                            <Link to={"/add-book"} className="nav-link">
+                                Thêm Sách Mới
+                            </Link>
+                        </li>
+                        
+                        {/* 1. LINK ADMIN BỊ THIẾU CỦA BẠN LÀ ĐÂY */}
+                        <li className="nav-item">
+                            <Link to={"/admin/orders"} className="nav-link">
+                                Quản lý Đơn hàng
+                            </Link>
+                        </li>
+                    </>
                 )}
 
+                {/* === PHẦN CỦA USER ĐÃ ĐĂNG NHẬP === */}
                 {currentUser ? (
-                    // === Nếu đã đăng nhập ===
                     <div className="nav-item-user">
+                        
+                        {/* 2. LINK USER (BẠN ĐÃ LÀM ĐÚNG) */}
+                        <Link to="/my-orders" className="nav-link">
+                            Lịch sử Đơn hàng
+                        </Link>
+
+                        {/* (Link Giỏ hàng giữ nguyên) */}
+                        <Link to="/cart" className="nav-link nav-cart">
+                            Giỏ hàng
+                            {totalQuantity > 0 && (
+                                <span className="badge-cart">{totalQuantity}</span>
+                            )}
+                        </Link>
+                        
+                        {/* (Phần Chào, user và Đăng xuất giữ nguyên) */}
                         <span className="nav-username">
                             Chào, {currentUser.username} ({(showAdminBoard ? "Admin" : "User")})
                         </span>
-                        {/* 7. Gọi prop onLogout */}
                         <button onClick={onLogout} className="nav-link-button">
                             Đăng xuất
                         </button>
                     </div>
                 ) : (
-                    // === Nếu chưa đăng nhập (Thêm nút Đăng ký) ===
+                    // (Phần Đăng ký/Đăng nhập giữ nguyên)
                     <div className="nav-item-guest">
                         <Link to={"/register"} className="nav-link">
                             Đăng ký

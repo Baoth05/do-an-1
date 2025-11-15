@@ -55,6 +55,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                logger.info("==> Logged user: {}", username);
+                logger.info("==> Authorities: {}", userDetails.getAuthorities());
+                logger.info("✅ JWT hợp lệ - user: {}, authorities = {}", username, userDetails.getAuthorities());
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails,
@@ -66,6 +69,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e.getMessage());
+
         }
 
         filterChain.doFilter(request, response);
