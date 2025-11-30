@@ -37,7 +37,7 @@ const SearchResults = () => {
         }
     }, [query]); 
 
-    // === 1. COPY HÀM NÀY TỪ HOME.JS ===
+ 
     const handleDelete = (id) => {
         if (window.confirm('Bạn có chắc muốn xóa cuốn sách này?')) {
             BookService.deleteBook(id).then(
@@ -53,7 +53,7 @@ const SearchResults = () => {
         }
     };
 
-    // === 2. COPY HÀM NÀY TỪ HOME.JS ===
+
     const handleAddToCart = (book) => {
         addToCart(book);
         alert('Đã thêm "' + book.title + '" vào giỏ hàng!');

@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "orders") // Tên bảng trong MySQL
 public class Order {
@@ -24,6 +26,17 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // Đơn hàng này của ai?
+    @Column(nullable = false)
+    private String address; // Địa chỉ giao hàng
+
+    @Column(nullable = false)
+    private String phone;   // Số điện thoại
+
+    @Column(nullable = false)
+    private String paymentMethod; // Phương thức thanh toán (COD, Banking)
+
+    @Column(nullable = false)
+    private String status = "Chờ xác nhận";
 
     // === Mối quan hệ: Một Order có NHIỀU OrderItem (sách) ===
     // cascade = CascadeType.ALL: Khi tạo Order, tự động tạo OrderItem
@@ -37,46 +50,7 @@ public class Order {
         this.orderDate = LocalDateTime.now(); // Tự động lấy ngày giờ hiện tại
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
 
     // Hàm tiện ích để thêm sách vào đơn hàng
     public void addOrderItem(OrderItem item) {

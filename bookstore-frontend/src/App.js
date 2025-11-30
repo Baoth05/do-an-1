@@ -15,18 +15,22 @@ import OrderHistory from './components/OrderHistory';
 import AdminOrders from './components/AdminOrders';
 import BookDetail from './components/BookDetail';
 import SearchResults from './components/SearchResults';
+import Footer from './components/Footer';
+import AdminUsers from './components/AdminUsers';   
+import OrderDetail from './components/OrderDetail';
+import UserProfile from './components/UserProfile';
+import AdminDashboard from './components/AdminDashboard';
+
 const AppContent = () => {
-   
+    // Đã xóa useLocation vì không cần dùng ở đây nữa
     const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
     const navigate = useNavigate();
 
-   
     const handleLoginSuccess = () => {
         setCurrentUser(AuthService.getCurrentUser());
         navigate('/home');
     };
-
-    
+ 
     const handleLogout = () => {
         AuthService.logout();
         setCurrentUser(undefined);
@@ -35,12 +39,10 @@ const AppContent = () => {
 
     return (    
         <>
-            
             <Navbar currentUser={currentUser} onLogout={handleLogout} /> 
             
             <div className="container mt-3">
                 <Routes>
-                    
                     <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
                     <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
                     <Route path="/register" element={<Register />} />
@@ -53,16 +55,21 @@ const AppContent = () => {
                     <Route path="/admin/orders" element={<AdminOrders />} />
                     <Route path="/book/:id" element={<BookDetail />} />
                     <Route path="/search-results" element={<SearchResults />} />
+                    <Route path="/admin/users" element={<AdminUsers />} />
+                    <Route path="/order-detail/:id" element={<OrderDetail />} />
+                    <Route path="/profile" element={<UserProfile />} />
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    
                 </Routes>
+                
+                <Footer />
             </div>
         </>
     );
 }
 
-// 9. <Router> bọc AppContent
 const App = () => {
     return (
-        // 3. "BỌC" TOÀN BỘ APP BẰNG CARTPROVIDER
         <CartProvider>
             <Router>
                 <AppContent />

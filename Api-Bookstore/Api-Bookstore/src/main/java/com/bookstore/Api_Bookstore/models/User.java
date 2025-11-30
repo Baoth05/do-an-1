@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,6 +29,9 @@ public class User {
     private String fullName;
     private String address;
 
+    private LocalDateTime lockedUntil; // Thêm dòng này và Getter/Sette
+
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
@@ -38,6 +42,7 @@ public class User {
         this.email = email;
         this.fullName = fullName;
         this.address = address;
+
     }
 
 

@@ -1,9 +1,20 @@
 import axios from 'axios';
-import authHeader from "./auth-header";
 
+// Hàm lấy Header chứa Token (Authorization)
+const authHeader = () => {
+    const raw = localStorage.getItem('user');
+    if (!raw) return {};
+
+    const user = JSON.parse(raw);
+
+    if (user.token) {
+        return { Authorization: `Bearer ${user.token}` };
+    }
+
+    return {};
+};
 const API_URL = "http://localhost:8080/api/v1/books";
 
-// ✅ CHÚ Ý: Thêm "/" khi nối ID
 const getAllBooks = () => {
     return axios.get(API_URL);
 };
@@ -23,12 +34,25 @@ const getBookById = (id) => {
 const updateBook = (bookId, bookData) => {
     return axios.put(`${API_URL}/${bookId}`, bookData, { headers: authHeader() });
 };
+
 const searchBooks = (query) => {
-    // Gọi API (không cần Token vì nó public)
     return axios.get(API_URL + "/search", {
-        params: { query: query } // (Gửi query lên)
+        params: { query: query }
     });
 };
+
+// === ĐÃ SỬA HÀM NÀY ===
+const uploadImage = (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    return axios.post(API_URL + "/upload", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            ...authHeader() // Gửi kèm Token Admin
+        },
+    });
+}
 
 const BookService = {
     getAllBooks,
@@ -37,6 +61,7 @@ const BookService = {
     updateBook,
     getBookById,
     searchBooks,
+    uploadImage,
 };
 
 export default BookService;

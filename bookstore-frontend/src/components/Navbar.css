@@ -1,95 +1,90 @@
 .navbar {
-    background-color: #333;
-    color: white;
-    padding: 1rem 2rem;
+    background-color: #ffffff; /* 1. ĐỔI NỀN SANG TRẮNG */
+    padding: 0 2rem;
+    height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* 2. THÊM VIỀN MỜ BÊN DƯỚI */
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .navbar-brand {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
-    color: white;
+    color: #333; /* 3. ĐỔI CHỮ SANG TỐI */
     text-decoration: none;
+}
+.navbar-brand:hover {
+    color: #007bff; /* Giữ màu xanh khi hover */
 }
 
 .navbar-nav {
     display: flex;
     align-items: center;
+    gap: 1rem; /* Khoảng cách giữa các mục */
 }
 
-.nav-item-user {
-    display: flex;
-    align-items: center;
-    gap: 1rem; /* Khoảng cách giữa "Chào" và "Đăng xuất" */
+.nav-item {
+    list-style: none; /* Xóa dấu chấm tròn của <li> */
 }
 
-.nav-username {
-    color: #f0f0f0;
+/* Style cho các link chung */
+.nav-link {
+    color: #555; /* 4. ĐỔI LINK SANG MÀU XÁM TỐI */
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 5px;
+    transition: color 0.3s ease, background-color 0.3s ease;
     font-weight: 500;
 }
-
-.nav-link, .nav-link-button {
-    color: white;
-    text-decoration: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+.nav-link:hover {
+    color: #007bff; /* Đổi màu xanh khi hover */
 }
 
-.nav-link-button {
-    background-color: #007bff;
-}
-
-.nav-link:hover, .nav-link-button:hover {
-    background-color: #0056b3;
-}
-
-/* Ghi đè CSS cũ (nếu có) */
-body {
-    background-color: #f9f9f9; /* Đổi màu nền body 1 chút */
-}  
-/* ... (giữ nguyên code cũ) ... */
-
+/* Style cho phần User (Giỏ hàng, Chào...) */
+.nav-item-user,
 .nav-item-guest {
     display: flex;
     align-items: center;
-    gap: 0.5rem; /* Khoảng cách giữa 2 nút */
+    gap: 1rem;
+    margin-left: 1rem; /* Tách khỏi nhóm link Admin */
 }
 
-/* Sửa lại .nav-link một chút nếu nó là <li> */
-.nav-item {
-    list-style: none; /* Bỏ dấu chấm tròn của <li> */
-} 
-/* ... (code cũ giữ nguyên) ... */
+.nav-username {
+    color: #333; /* 5. ĐỔI CHỮ SANG TỐI */
+    font-weight: 600;
+}
 
-/* Style cho icon giỏ hàng và số lượng (badge) */
+/* Nút Đăng xuất */
+.nav-link-button {
+    background-color: transparent;
+    border: none;
+    font-family: inherit; /* Giữ font của web */
+    font-size: 1rem; /* Giữ size của web */
+    cursor: pointer;
+    color: #dc3545; /* 6. ĐỔI NÚT ĐĂNG XUẤT SANG MÀU ĐỎ */
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+}
+.nav-link-button:hover {
+    color: #c82333;
+}
+
+/* Giỏ hàng */
 .nav-cart {
     position: relative;
-    padding-right: 15px; /* Thêm chút đệm */
+    display: inline-block;
 }
-
 .badge-cart {
     position: absolute;
-    top: -8px; /* Đẩy lên trên */
-    right: -2px; /* Đẩy qua phải */
-    
+    top: -5px;
+    right: -10px;
     background-color: #dc3545; /* Màu đỏ */
     color: white;
-    
-    border-radius: 50%; /* Bo tròn */
-    padding: 3px 6px;
     font-size: 0.75rem;
-    font-weight: bold;
-    
-    /* Chống méo khi số là 1 hoặc 10 */
-    min-width: 20px; 
-    text-align: center;
-    box-sizing: border-box;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-weight: 600;
 }

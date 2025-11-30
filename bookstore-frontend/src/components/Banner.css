@@ -1,0 +1,87 @@
+.banner-container {
+    background: url('https://images.unsplash.com/photo-1549673453-df01b54a780b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
+    height: 400px; /* Chiều cao của banner */
+    display: flex;
+    align-items: center; /* Căn giữa nội dung theo chiều dọc */
+    justify-content: center; /* Căn giữa nội dung theo chiều ngang */
+    text-align: center;
+    color: white; /* Màu chữ trắng */
+    position: relative;
+    /* Hiệu ứng mờ (overlay) để chữ dễ đọc hơn */
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4); /* Lớp phủ đen trong suốt */
+    }
+}
+
+.banner-content {
+    position: relative; /* Đảm bảo nội dung nằm trên lớp phủ */
+    z-index: 1; /* Đẩy nội dung lên trên lớp phủ */
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.banner-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Tạo bóng chữ */
+}
+
+.banner-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.banner-button {
+    background-color: #007bff; /* Nút màu xanh */
+    color: white;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block; /* Để padding và margin hoạt động đúng */
+}
+
+.banner-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px); /* Hiệu ứng nhấc lên */
+}
+
+/* Responsive cho màn hình nhỏ hơn */
+@media (max-width: 768px) {
+    .banner-container {
+        height: 300px;
+    }
+    .banner-title {
+        font-size: 2.5rem;
+    }
+    .banner-subtitle {
+        font-size: 1.2rem;
+    }
+    .banner-button {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-container {
+        height: 250px;
+    }
+    .banner-title {
+        font-size: 2rem;
+    }
+    .banner-subtitle {
+        font-size: 1rem;
+    }
+}

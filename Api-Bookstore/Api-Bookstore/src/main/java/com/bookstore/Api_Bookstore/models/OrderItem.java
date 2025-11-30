@@ -1,8 +1,6 @@
 package com.bookstore.Api_Bookstore.models;
 
-
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -18,12 +16,16 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    // === Mối quan hệ: Nhiều OrderItem trỏ đến MỘT Sách ===
-    // Chúng ta chỉ lưu ID sách, hoặc bạn có thể dùng @ManyToOne
+    // === GIỮ NGUYÊN CỘT NÀY ĐỂ LƯU ID (Write) ===
     @Column(name = "book_id", nullable = false)
     private Long bookId;
-    // (Lưu ý: Chúng ta chỉ lưu ID sách, không phải toàn bộ đối tượng Book
-    //  để tránh thay đổi đơn hàng cũ khi Sách (Book) bị sửa/xóa)
+
+    // === THÊM MỚI: MỐI QUAN HỆ ĐỂ ĐỌC THÔNG TIN SÁCH (Read-Only) ===
+    // insertable = false, updatable = false: Để tránh xung đột với cột bookId ở trên
+    @ManyToOne
+    @JoinColumn(name = "book_id", insertable = false, updatable = false)
+    private Book book;
+    // (Nhờ biến này, khi lấy OrderItem, ta sẽ có luôn thông tin book.title, book.imageUrl...)
 
     @Column(nullable = false)
     private int quantity; // Số lượng
@@ -31,7 +33,7 @@ public class OrderItem {
     @Column(nullable = false)
     private Double price; // Giá tại thời điểm mua
 
-    // Getters and Setters
+    // === Getters and Setters ===
     public Long getId() {
         return id;
     }
@@ -54,6 +56,15 @@ public class OrderItem {
 
     public void setBookId(Long bookId) {
         this.bookId = bookId;
+    }
+
+    // Getter/Setter cho đối tượng Book mới thêm
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public int getQuantity() {

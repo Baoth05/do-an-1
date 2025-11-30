@@ -1,66 +1,178 @@
+/* src/components/CreateBook.css */
+
 .form-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', sans-serif;
 }
 
 .form-container h2 {
     text-align: center;
-    margin-bottom: 1.5rem;
-    color: #333;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-weight: 800;
+    text-transform: uppercase;
 }
 
+/* --- INPUT & LABEL --- */
 .form-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 8px;
     font-weight: 600;
-    color: #555;
+    color: #34495e;
 }
 
-.form-group input[type="text"],
-.form-group input[type="number"] {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Quan trọng để padding không làm vỡ layout */
+.required-star {
+    color: #e74c3c;
+    margin-left: 4px;
 }
 
-button[type="submit"] {
+.form-control {
     width: 100%;
-    padding: 0.75rem;
-    background-color: #007bff;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box; /* Quan trọng để không bị tràn */
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* Riêng cho textarea mô tả */
+textarea.form-control {
+    min-height: 200px;
+    resize: vertical; /* Chỉ cho kéo chiều dọc */
+    line-height: 1.6;
+}
+
+/* --- VÙNG NHẬP KHO (MỚI) --- */
+.stock-box {
+    background-color: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #bbdefb;
+}
+
+.stock-label {
+    color: #0d47a1;
+    font-weight: 700 !important;
+}
+
+/* --- VÙNG UPLOAD ẢNH (MỚI) --- */
+.upload-box {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fafafa;
+    transition: all 0.3s;
+}
+
+/* Style riêng cho Ảnh chính */
+.upload-box.main {
+    border-color: #007bff;
+    background-color: #f0f7ff;
+}
+.label-main { color: #007bff; font-weight: bold; }
+
+/* Style riêng cho Ảnh phụ */
+.upload-box.sub {
+    border-color: #28a745;
+    background-color: #f0fff4;
+    margin-top: 20px;
+}
+.label-sub { color: #28a745; font-weight: bold; }
+
+/* --- PREVIEW ẢNH --- */
+.preview-container {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.img-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.preview-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.main-preview {
+    width: 120px; /* Ảnh chính to hơn chút */
+}
+
+/* Nút xóa ảnh X */
+.btn-remove-img {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #e74c3c;
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.btn-remove-img:hover {
+    transform: scale(1.1);
+    background-color: #c0392b;
+}
+
+/* --- NÚT SUBMIT --- */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
+    transition: opacity 0.3s;
+    margin-top: 20px;
 }
 
-button[type="submit"]:hover {
-    background-color: #0056b3;
+.btn-submit:hover {
+    opacity: 0.9;
 }
 
-button[type="submit"]:disabled {
-    background-color: #ccc;
+.btn-submit:disabled {
+    background: #bdc3c7;
     cursor: not-allowed;
 }
 
 .message-error {
-    color: #d9534f;
-    background-color: #f2dede;
-    border: 1px solid #ebccd1;
-    padding: 1rem;
-    border-radius: 4px;
-    margin-top: 1rem;
+    color: #e74c3c;
     text-align: center;
+    margin-top: 15px;
+    font-weight: 600;
 }

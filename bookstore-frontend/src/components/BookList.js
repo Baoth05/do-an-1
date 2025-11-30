@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import AuthService from '../services/AuthService'; 
 import './BookList.css';
 
-// 1. SỬA LỖI: THÊM DÒNG IMPORT NÀY
+
 import { useCart } from '../context/CartContext';
 
 const BookList = () => {
@@ -12,7 +12,6 @@ const BookList = () => {
     const [message, setMessage] = useState(''); 
     const [isAdmin, setIsAdmin] = useState(false);
     
-    // 2. Dòng này bây giờ sẽ hoạt động
     const { addToCart } = useCart(); 
 
     const handleAddToCart = (book) => {

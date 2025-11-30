@@ -26,13 +26,14 @@ const SearchBar = () => {
                 className="search-bar-input"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Tìm kiếm sách..."
+                placeholder="Tìm tên sách, tác giả, thể loại..."
             />
             <button type="submit" className="search-bar-button">
                 Tìm
             </button>
         </form>
     );
+    
 };
 
 export default SearchBar;

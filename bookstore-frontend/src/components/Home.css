@@ -1,147 +1,235 @@
-/* Container chung cho toàn bộ danh sách */
+/* src/components/Home.css */
+
+/* 1. CONTAINER CHÍNH (Đã sửa để tràn màn hình đẹp hơn) */
 .book-list-container {
+    width: 100%;
+    padding: 30px 40px; /* Cách lề thoáng hơn */
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    border-radius: 6px;
     display: grid;
-    /* Tự động chia cột, mỗi cột tối thiểu 220px */
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 2rem; /* Khoảng cách giữa các sách */
-    padding: 2rem 0;
+    /* Tự động chia cột: Tối thiểu 240px, còn lại chia đều */
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 30px;
+    box-sizing: border-box;
 }
 
-/* Thẻ (card) của từng cuốn sách */
+.section-title {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 2rem;
+}
+
+/* 2. THẺ SÁCH (CARD) */
 .book-card {
     background: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    overflow: hidden; /* Giữ cho ảnh bo tròn đẹp */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+    overflow: hidden;
+    
+    /* Flexbox để thẻ co giãn đều nhau */
     display: flex;
     flex-direction: column;
+    height: 100%; 
+    position: relative; /* Để đặt Badge Hết hàng */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .book-card:hover {
-    transform: translateY(-5px); /* Nhấc card lên khi hover */
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Ảnh bìa (bên trong Link) */
+/* 3. HÌNH ẢNH & BADGE */
 .book-card-image {
     width: 100%;
-    height: 300px; /* Cố định chiều cao ảnh */
-    object-fit: cover; /* Đảm bảo ảnh vừa vặn, không bị méo */
+    height: 320px; /* Chiều cao cố định */
+    object-fit: cover;
     border-bottom: 1px solid #f0f0f0;
 }
 
-/* Vùng nội dung (chữ) bên dưới ảnh */
+/* Lớp phủ làm mờ khi hết hàng */
+.out-of-stock-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Nhãn Hết hàng đỏ rực */
+.badge-stock {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #dc3545;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* 4. NỘI DUNG CARD */
 .book-card-content {
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Giúp đẩy các nút xuống dưới cùng */
+    
+    flex-grow: 1; /* Chiếm hết khoảng trống còn lại */
 }
 
-/* Link của Tiêu đề (do chúng ta bọc tiêu đề bằng <Link>) */
 .book-card-title-link {
-    text-decoration: none; /* Bỏ gạch chân của link */
+    text-decoration: none;
+    color: #333;
 }
 
 .book-card-title {
     font-size: 1.15rem;
-    font-weight: 600;
-    color: #333;
+    font-weight: 700;
     margin: 0 0 0.5rem 0;
+    line-height: 1.4;
     
-    /* Giới hạn tiêu đề sách 2 dòng (nếu quá dài) */
+    /* Cắt dòng nếu tên quá dài (2 dòng) */
     overflow: hidden;
-    text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    min-height: 2.5em; /* Giữ chỗ cho 2 dòng */
+    height: 2.8em; 
+    transition: color 0.2s;
 }
 
-/* Đổi màu tiêu đề khi hover vào link */
-.book-card-title-link:hover .book-card-title {
-     color: #007bff;
+.book-card-title:hover {
+    color: #007bff;
 }
 
 .book-card-author {
     font-size: 0.9rem;
     color: #777;
     margin-bottom: 0.75rem;
+    font-style: italic;
+}
+
+/* Wrapper để đẩy giá và nút xuống đáy cùng nhau */
+.book-card-footer {
+    margin-top: auto;
 }
 
 .book-card-price {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #d9534f; /* Màu đỏ cho giá */
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #d9534f;
+    margin-bottom: 0.5rem;
+}
+
+/* === 5. META INFO (GIỮ NGUYÊN THEO YÊU CẦU) === */
+.book-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
     margin-bottom: 1rem;
-    margin-top: auto; /* Đẩy giá và nút xuống dưới cùng */
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
 }
 
-/* Vùng chứa các nút */
+.book-category {
+    color: #007bff;
+    font-weight: 500;
+}
+
+.book-status {
+    font-weight: bold;
+}
+
+.status-success { color: #28a745; }
+.status-danger { color: #dc3545; }
+
+/* === 6. BUTTONS === */
 .book-card-actions {
-    margin-top: 1rem;
+    margin-top: 0;
 }
 
-/* Nút "Thêm vào giỏ" (xanh dương) */
+/* Nút Thêm vào giỏ */
 .btn-add {
     background-color: #007bff;
     color: white;
-    padding: 0.6rem 0;
-    width: 100%; /* Nút chiếm toàn bộ chiều rộng card */
+    padding: 10px 0;
+    width: 100%;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 0.95rem;
     font-weight: 600;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
 .btn-add:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
 }
 
-/* Vùng chứa nút của Admin (Sửa, Xóa) */
-.admin-actions {
-    margin-top: 0.75rem;
-    display: flex;
-    gap: 0.5rem; /* Khoảng cách giữa nút Sửa và Xóa */
+/* Nút bị vô hiệu hóa */
+.btn-add.disabled, .btn-add:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    opacity: 1;
+    transform: none;
+    color: #fff;
 }
 
 .btn-edit, .btn-delete {
-    flex: 1; /* Chia đều không gian */
-    padding: 0.5rem;
-    border-radius: 5px;
+    flex: 1; /* Chia đều chiều rộng (50% - 50%) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 0;
+    border-radius: 6px; /* Bo góc mềm mại */
+    border: none;
     cursor: pointer;
     font-size: 0.9rem;
+    transition: all 0.2s;
+    gap: 5px;
+}
+
+.btn-edit { 
+    background-color: #e2bf21; /* Nền  */
+    color: #11100e;            /* Chữ  */
+    border: 1px solid #ffeeba; /* Viền */
+}
+.btn-edit:hover { 
+    background-color: #ffe8a1;
+    transform: translateY(-2px);
+}
+
+.btn-delete { 
+    background-color: #62dfb5; /* Nền  */
+    color: #181414;            /* Chữ */
+    border: 1px solid #f5c6cb; /* Viền*/
+}
+
+.btn-delete:hover { 
+    background-color: #f1b0b7;
+    transform: translateY(-2px);
+}
+/* --- Loading & Error --- */
+.loading, .message-error {
     text-align: center;
-    font-weight: 500;
-}
-
-/* Nút Sửa (vàng) - Đây là 1 <Link> */
-.btn-edit {
-    background-color: #ffc107;
-    color: #333;
-    text-decoration: none;
-}
-.btn-edit:hover {
-    background-color: #e0a800;
-}
-
-/* Nút Xóa (đỏ) - Đây là 1 <button> */
-.btn-delete {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    font-family: inherit; /* Đảm bảo font chữ giống nút Sửa */
-}
-.btn-delete:hover {
-    background-color: #c82333;
-}
-
-/* (Dành cho Home.js nếu đang tải) */
-.loading {
-    padding: 2rem;
-    text-align: center;
+    padding: 50px;
     font-size: 1.2rem;
+    color: #555;
 }
+
+.message-error { color: #dc3545; }

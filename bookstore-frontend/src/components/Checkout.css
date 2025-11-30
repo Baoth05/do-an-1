@@ -1,0 +1,170 @@
+/* src/components/Checkout.css */
+
+.checkout-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+}
+
+.checkout-title {
+    font-weight: 800;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* --- KHUNG NỀN XÁM (QUAN TRỌNG) --- */
+.checkout-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    /* Màu nền xám nhạt để làm nổi bật ô nhập liệu */
+    background-color: #f8f9fa; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.card-header-custom {
+    background-color: #343a40; /* Màu tối sang trọng */
+    color: #fff;
+    font-weight: 700;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+.bg-summary {
+    background-color: #007bff; /* Màu xanh cho phần tổng tiền */
+}
+
+/* --- Ô NHẬP LIỆU (INPUT) --- */
+.form-group-custom {
+    margin-bottom: 20px;
+}
+
+.form-label-custom {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+    display: block;
+    font-size: 0.95rem;
+}
+
+/* Dấu sao đỏ */
+.required-mark {
+    color: #dc3545;
+    font-weight: bold;
+    margin-left: 4px;
+    font-size: 1.1rem;
+}
+
+.custom-input {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    width: 100%;
+    /* Nền trắng để nổi bật trên nền xám của khung */
+    background-color: #ffffff; 
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.custom-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+    outline: none;
+}
+
+.custom-select {
+    height: 50px;
+    cursor: pointer;
+}
+
+/* --- PHẦN TÓM TẮT ĐƠN HÀNG --- */
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed #ccc;
+}
+
+.item-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.item-price {
+    color: #555;
+}
+
+.total-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.total-amount {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #dc3545; /* Màu đỏ rực rỡ */
+}
+
+/* BUTTON */
+.btn-confirm {
+    background: linear-gradient(45deg, #ff512f, #dd2476);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 15px;
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 20px;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 15px rgba(221, 36, 118, 0.4);
+}
+
+.btn-confirm:hover:not(:disabled) {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* THÔNG BÁO SỬ DỤNG ĐỊA CHỈ CŨ */
+.address-alert {
+    background-color: #d1e7dd;
+    border: 1px solid #badbcc;
+    color: #0f5132;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fadeIn 0.5s;
+}
+
+.address-alert strong {
+    margin-right: 5px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

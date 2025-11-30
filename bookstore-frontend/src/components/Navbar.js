@@ -1,51 +1,87 @@
-import React from 'react'; 
-import { Link } from 'react-router-dom'; 
-import { useCart } from '../context/CartContext'; 
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import AuthService from '../services/AuthService';
+import { useCart } from '../context/CartContext';
 import SearchBar from './SearchBar';
 import './Navbar.css';
 
-const Navbar = ({ currentUser, onLogout }) => {
-    
-    const showAdminBoard = currentUser?.roles?.includes("ROLE_ADMIN");
+const Navbar = () => {
+    const [currentUser, setCurrentUser] = useState(undefined);
+    const [showAdminBoard, setShowAdminBoard] = useState(false);
     const { cartItems } = useCart();
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+    useEffect(() => {
+        const user = AuthService.getCurrentUser();
+        if (user) {
+            setCurrentUser(user);
+            setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+        }
+    }, []);
+
+    const logOut = () => {
+        AuthService.logout();
+        setCurrentUser(undefined);
+        setShowAdminBoard(false);
+        navigate("/login");
+        window.location.reload();
+    };
+
+    // Logic ẩn thanh tìm kiếm
+    const hideSearchBarRoutes = ['/login', '/register'];
+    const showSearchBar = !hideSearchBarRoutes.includes(location.pathname);
 
     return (
         <nav className="navbar">
+            
             <Link to={"/home"} className="navbar-brand">
                 Bookstore
             </Link>
-            <SearchBar />
+
+            {/* THANH TÌM KIẾM */}
+            {showSearchBar && <SearchBar />}
 
             <div className="navbar-nav">
+                
                 {/* === PHẦN CỦA ADMIN === */}
                 {showAdminBoard && (
-                    <> {/* Dùng Fragment <>...</> để bọc các link Admin */}
+                    <> 
                         <li className="nav-item">
                             <Link to={"/add-book"} className="nav-link">
-                                Thêm Sách Mới
+                                Thêm Sách
                             </Link>
                         </li>
-                        
-                        {/* 1. LINK ADMIN BỊ THIẾU CỦA BẠN LÀ ĐÂY */}
                         <li className="nav-item">
                             <Link to={"/admin/orders"} className="nav-link">
-                                Quản lý Đơn hàng
+                                Quản lý Đơn Hàng
                             </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to={"/admin/users"} className="nav-link">
+                                Quản Lý Khách Hàng
+                            </Link>
+                        </li>
+                        {/* Admin có nút Đăng xuất riêng cho tiện */}
+                        <li className="nav-item">
+                            <button onClick={logOut} className="nav-link-button" style={{marginLeft: '10px'}}>
+                                Đăng xuất
+                            </button>
                         </li>
                     </>
                 )}
 
-                {/* === PHẦN CỦA USER ĐÃ ĐĂNG NHẬP === */}
-                {currentUser ? (
+                {/* === PHẦN CỦA USER (KHÔNG PHẢI ADMIN) === */}
+                {currentUser && !showAdminBoard ? (
                     <div className="nav-item-user">
                         
-                        {/* 2. LINK USER (BẠN ĐÃ LÀM ĐÚNG) */}
                         <Link to="/my-orders" className="nav-link">
-                            Lịch sử Đơn hàng
+                            Lịch sử Đơn
                         </Link>
 
-                        {/* (Link Giỏ hàng giữ nguyên) */}
+                        {/* GIỎ HÀNG (Chỉ User thấy) */}
                         <Link to="/cart" className="nav-link nav-cart">
                             Giỏ hàng
                             {totalQuantity > 0 && (
@@ -53,24 +89,27 @@ const Navbar = ({ currentUser, onLogout }) => {
                             )}
                         </Link>
                         
-                        {/* (Phần Chào, user và Đăng xuất giữ nguyên) */}
-                        <span className="nav-username">
-                            Chào, {currentUser.username} ({(showAdminBoard ? "Admin" : "User")})
-                        </span>
-                        <button onClick={onLogout} className="nav-link-button">
+                        {/* TÀI KHOẢN & ĐĂNG XUẤT */}
+                        <Link to="/profile" className="nav-link" >
+                            Tài khoản
+                        </Link>
+                        <button onClick={logOut} className="nav-link-button">
                             Đăng xuất
                         </button>
                     </div>
+                    
                 ) : (
-                    // (Phần Đăng ký/Đăng nhập giữ nguyên)
-                    <div className="nav-item-guest">
-                        <Link to={"/register"} className="nav-link">
-                            Đăng ký
-                        </Link>
-                        <Link to={"/login"} className="nav-link">
-                            Đăng nhập
-                        </Link>
-                    </div>
+                    // === PHẦN KHÁCH VÃNG LAI (CHƯA ĐĂNG NHẬP) ===
+                    !currentUser && (
+                        <div className="nav-item-guest">
+                            <Link to={"/register"} className="nav-link">
+                                Đăng ký
+                            </Link>
+                            <Link to={"/login"} className="nav-link">
+                                Đăng nhập
+                            </Link>
+                        </div>
+                    )
                 )}
             </div>
         </nav>

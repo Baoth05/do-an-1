@@ -1,87 +1,156 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BookService from '../services/BookService';
-import { useCart } from '../context/CartContext'; // Lấy "kho" giỏ hàng
-import './BookDetail.css'; // Sẽ tạo ngay sau đây
+import { useCart } from '../context/CartContext'; 
+import './BookDetail.css'; 
 
 const BookDetail = () => {
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
     
-    // 1. Lấy "id" từ URL (ví dụ: /book/53)
+    // STATE MỚI: Để lưu ảnh đang được hiển thị to
+    const [mainImage, setMainImage] = useState(''); 
+
     const { id } = useParams(); 
-    
-    // 2. Lấy hàm "thêm vào giỏ"
     const { addToCart } = useCart();
 
-
     useEffect(() => {
-        // 3. Gọi API để lấy chi tiết sách
         BookService.getBookById(id).then(
             (response) => {
                 setBook(response.data);
+                // Mặc định hiển thị ảnh bìa chính khi mới vào
+                setMainImage(response.data.imageUrl); 
                 setLoading(false);
             },
             (error) => {
-                const resMessage =
-                    (error.response?.data?.message) ||
-                    error.message ||
-                    error.toString();
+                const resMessage = (error.response?.data?.message) || error.message || error.toString();
                 setMessage(resMessage);
                 setLoading(false);
             }
         );
-    }, [id]); // Chạy lại khi "id" thay đổi
+    }, [id]);
 
-    // 4. Hàm xử lý khi nhấn "Thêm vào giỏ"
+    // Logic kiểm tra hết hàng (Dựa vào số lượng HOẶC trạng thái)
+    // Nếu book chưa tải xong (null) thì mặc định là 0 để không lỗi
+    const quantity = book?.stockQuantity || 0;
+    
+    const isOutOfStock = quantity <= 0 || 
+                         (book && book.status === 'Hết hàng') || 
+                         (book && book.status === 'Ngừng kinh doanh');
+
     const handleAddToCart = () => {
         if (book) {
             addToCart(book);
-            // Thông báo (hoặc chuyển hướng)
             alert('Đã thêm "' + book.title + '" vào giỏ hàng!');
-            // (Bạn cũng có thể chuyển về /cart hoặc /home)
-            // navigate('/cart'); 
         }
     };
 
-    if (loading) {
-        return <div className="detail-container"><h2>Đang tải...</h2></div>;
-    }
+    if (loading) return <div className="detail-container"><h2>Đang tải...</h2></div>;
+    if (message) return <div className="detail-container message-error">Lỗi: {message}</div>;
+    if (!book) return <div className="detail-container"><h2>Không tìm thấy sách.</h2></div>;
 
-    if (message) {
-        return <div className="detail-container message-error">Lỗi: {message}</div>;
-    }
-
-    if (!book) {
-        return <div className="detail-container"><h2>Không tìm thấy sách.</h2></div>;
-    }
-
-    // 5. Giao diện chi tiết sách
     return (
-        <div className="detail-container">
-            <div className="detail-image">
-                <img 
-                    src={book.imageUrl || 'https://via.placeholder.com/300x450.png?text=No+Image'} 
-                    alt={book.title} 
-                />
+        <div className="detail-container" style={{ display: 'flex', gap: '40px', padding: '20px' }}>
+            
+            {/* --- CỘT TRÁI: HÌNH ẢNH (GALLERY) --- */}
+            <div className="detail-image-section" style={{ flex: '1' }}>
+                {/* 1. Ảnh lớn */}
+                <div className="main-image-frame" style={{ marginBottom: '15px', textAlign: 'center', border: '1px solid #eee', padding: '10px', borderRadius: '8px' }}>
+                    <img 
+                        src={mainImage || 'https://via.placeholder.com/300x450.png?text=No+Image'} 
+                        alt={book.title} 
+                        style={{ maxWidth: '100%', maxHeight: '450px', objectFit: 'contain' }}
+                    />
+                </div>
+
+                {/* 2. Danh sách ảnh nhỏ (Thumbnails) */}
+                <div className="thumbnails-list" style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '10px' }}>
+                    {/* Ảnh gốc */}
+                    <img 
+                        src={book.imageUrl} 
+                        onClick={() => setMainImage(book.imageUrl)}
+                        style={{ 
+                            width: '70px', height: '90px', objectFit: 'cover', cursor: 'pointer', 
+                            border: mainImage === book.imageUrl ? '2px solid #007bff' : '1px solid #ddd',
+                            borderRadius: '4px'
+                        }}
+                        alt="Gốc"
+                    />
+                    {/* Ảnh phụ (Lặp qua danh sách images) */}
+                    {book.images && book.images.map((img, idx) => (
+                        <img 
+                            key={idx}
+                            src={img.imageUrl} 
+                            onClick={() => setMainImage(img.imageUrl)}
+                            style={{ 
+                                width: '70px', height: '90px', objectFit: 'cover', cursor: 'pointer', 
+                                border: mainImage === img.imageUrl ? '2px solid #007bff' : '1px solid #ddd',
+                                borderRadius: '4px'
+                            }}
+                            alt={`Phụ ${idx}`}
+                        />
+                    ))}
+                </div>
             </div>
-            <div className="detail-content">
-                <h1 className="detail-title">{book.title}</h1>
-                <p className="detail-author">Tác giả: {book.author}</p>
-                <p className="detail-year">Năm XB: {book.publicationYear}</p>
-                <p className="detail-pages">Số trang: {book.pageCount}</p>
+
+            {/* --- CỘT PHẢI: THÔNG TIN --- */}
+            <div className="detail-content" style={{ flex: '1.5' }}>
+                <h1 className="detail-title" style={{ fontSize: '2rem', marginBottom: '10px' }}>{book.title}</h1>
                 
-                <p className="detail-price">
-                    Giá: {book.price.toLocaleString('vi-VN')} VND
-                </p>
+                <div style={{ display: 'flex', gap: '20px', color: '#666', marginBottom: '15px' }}>
+                    <span>Tác giả: <strong>{book.author}</strong></span>
+                    <span>|</span>
+                    <span>Thể loại: {book.category}</span>
+                </div>
+
+                {/* GIÁ VÀ TRẠNG THÁI KHO */}
+                <div style={{ background: '#f8f9fa', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                    <h2 className="detail-price" style={{ color: '#d32f2f', margin: '0 0 10px 0' }}>
+                        {book.price.toLocaleString('vi-VN')} ₫
+                    </h2>
+                    
+                    <div style={{ fontSize: '1.1rem' }}>
+                        Trạng thái: 
+                        {isOutOfStock ? (
+                            <span style={{ color: 'red', fontWeight: 'bold', marginLeft: '10px' }}>
+                                🚫 Hết hàng 
+                                {quantity <= 0 ? " (Kho đã hết)" : " (Ngừng bán)"}
+                            </span>
+                        ) : (
+                            <span style={{ color: 'green', fontWeight: 'bold', marginLeft: '10px' }}>
+                                ✅ Còn hàng (Sẵn có: {quantity})
+                            </span>
+                        )}
+                    </div>
+                </div>
                 
-                <h3 className="detail-desc-title">Mô tả</h3>
-                <p className="detail-description">{book.description}</p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '20px', color: '#555' }}>
+                    <p><strong>Năm XB:</strong> {book.publicationYear}</p>
+                    <p><strong>Số trang:</strong> {book.pageCount}</p>
+                </div>
                 
-                <button className="btn-add-to-cart" onClick={handleAddToCart}>
-                    Thêm vào giỏ hàng
-                </button>
+                <h3 className="detail-desc-title" style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Mô tả sản phẩm</h3>
+                <p className="detail-description" style={{ lineHeight: '1.6', color: '#333' }}>{book.description}</p>
+                
+                {/* NÚT MUA HÀNG */}
+                <div style={{ marginTop: '30px' }}>
+                    {isOutOfStock ? (
+                        <button className="btn-add-to-cart" style={{ 
+                            backgroundColor: '#ccc', cursor: 'not-allowed', 
+                            padding: '15px 40px', fontSize: '1.2rem', border: 'none', borderRadius: '5px', color: '#666' 
+                        }} disabled>
+                            Hết hàng
+                        </button>
+                    ) : (
+                        <button className="btn-add-to-cart" onClick={handleAddToCart} style={{
+                            backgroundColor: '#d32f2f', color: 'white',
+                            padding: '15px 40px', fontSize: '1.2rem', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold'
+                        }}>
+                            <i className="fas fa-cart-plus"></i> Thêm vào giỏ hàng
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );

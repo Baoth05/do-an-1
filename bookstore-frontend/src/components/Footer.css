@@ -1,0 +1,67 @@
+.footer-container {
+    /* 1. ĐỔI NỀN SANG XÁM RẤT NHẠT */
+    background-color: #f8f9fa; 
+    /* 2. ĐỔI MÀU CHỮ SANG TỐI */
+    color: #555; 
+    padding: 3rem 2rem;
+    margin-top: 3rem;
+    width: 100%;
+    box-sizing: border-box;
+    /* 3. THÊM VIỀN MỜ BÊN TRÊN */
+    border-top: 1px solid #e0e0e0;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section {
+    padding: 1rem;
+}
+
+.footer-title {
+    font-size: 1.25rem;
+    color: #333; /* 4. ĐỔI TIÊU ĐỀ SANG TỐI */
+    margin-bottom: 1.25rem;
+    border-bottom: 2px solid #007bff; /* Giữ viền xanh */
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.footer-section p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #6c757d; /* 5. ĐỔI CHỮ SANG XÁM TỐI */
+}
+
+.footer-section.links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section.links li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-section.links a {
+    color: #6c757d; /* 6. ĐỔI LINK SANG XÁM TỐI */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section.links a:hover {
+    color: #007bff; /* Giữ màu xanh khi hover */
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e0e0; /* 7. ĐỔI VIỀN MỜ */
+    font-size: 0.9rem;
+    color: #6c757d;
+}

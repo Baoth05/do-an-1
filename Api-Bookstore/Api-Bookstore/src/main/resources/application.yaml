@@ -14,3 +14,8 @@ bookstore:
       app:
         jwtSecret: aVeryLongAndSecureSecretKeyForOurBookstoreApplicationThatIsHardToGuess
         jwtExpirationMs: 86400000
+# Cấu hình giới hạn file upload (Tăng lên 10MB)
+servlet:
+  multipart:
+    max-file-size: 10MB
+    max-request-size: 10MB

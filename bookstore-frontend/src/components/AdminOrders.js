@@ -1,101 +1,109 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import OrderService from '../services/OrderService';
-// Dùng chung style của OrderHistory
-import './OrderHistory.css'; 
+import './AdminUsers.css'; // Tận dụng CSS bảng đẹp
 
 const AdminOrders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState('');
 
     useEffect(() => {
-        // 1. Gọi API "getAllOrders" (của Admin)
-        OrderService.getAllOrders().then(
-    (response) => {
-        console.log("===> Dữ liệu trả về từ backend:", response.data);
-        if (Array.isArray(response.data)) {
-            setOrders(response.data.reverse());
-        } else if (response.data && Array.isArray(response.data.orders)) {
-            setOrders(response.data.orders.reverse());
-        } else {
-            setOrders([]);
-        }
-        setLoading(false);
-    },
+        loadOrders();
+    }, []);
 
-            (error) => {
-                // 3. Xử lý lỗi
-                const resMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-                setMessage("Lỗi: " + resMessage); 
+    const loadOrders = () => {
+        OrderService.getAllOrders()
+            .then(res => {
+                // Sắp xếp đơn mới nhất lên đầu
+                setOrders(res.data.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate)));
                 setLoading(false);
-            }
-        );
-    }, []); 
-
-    // (Hàm format ngày giờ giữ nguyên)
-    const formatDate = (dateTimeString) => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return new Date(dateTimeString).toLocaleDateString('vi-VN', options);
+            })
+            .catch(err => console.error(err));
     };
 
-    if (loading) {
-        return <div className="cart-container"><h2>Đang tải TẤT CẢ đơn hàng...</h2></div>;
-    }
+    const handleStatusChange = (id, newStatus) => {
+        if (window.confirm(`Bạn muốn đổi trạng thái đơn #${id} sang "${newStatus}"?`)) {
+            OrderService.updateOrderStatus(id, newStatus)
+                .then(() => {
+                    alert("Cập nhật thành công!");
+                    loadOrders(); // Tải lại danh sách
+                })
+                .catch(err => alert("Lỗi cập nhật: " + err.message));
+        }
+    };
 
-    if (message) {
-        return <div className="cart-container message-error">{message}</div>;
-    }
+    // Danh sách các trạng thái có thể chọn
+    const statusOptions = ["Chờ xác nhận", "Đang chuẩn bị", "Đang giao", "Đã giao", "Đã hủy"];
 
-    if (orders.length === 0) {
-        return (
-            <div className="cart-container">
-                <h2>Quản lý Đơn hàng (Admin)</h2>
-                <p>Chưa có bất kỳ đơn hàng nào trong hệ thống.</p>
-            </div>
-        );
-    }
+    // Màu sắc cho từng trạng thái
+    const getStatusBadge = (status) => {
+        switch(status) {
+            case 'Chờ xác nhận': return 'badge bg-warning text-dark';
+            case 'Đang giao': return 'badge bg-primary';
+            case 'Đã giao': return 'badge bg-success';
+            case 'Đã hủy': return 'badge bg-danger';
+            default: return 'badge bg-secondary';
+        }
+    };
 
     return (
-        <div className="history-container">
-            <h2>Quản lý Đơn hàng (Admin)</h2>
-            {orders.map((order) => (
-                <div className="order-card" key={order.id}>
-                    <div className="order-header">
-                        <div>
-                            <h3>Đơn hàng #{order.id}</h3>
-                            {/* 2. SỬA LỖI (Thêm ?): Kiểm tra (order.user) an toàn */}
-                            <p style={{ color: 'red', fontWeight: 'bold' }}>
-                                Người đặt: User ID {order.user ? order.user.id : 'N/A'}
-                            </p>
-                            <p>Ngày đặt: {formatDate(order.orderDate)}</p>
-                        </div>
-                        
-                        {/* 3. SỬA LỖI (Thêm || 0): Tổng tiền */}
-                        <strong>
-                            Tổng tiền: {(order.totalAmount || 0).toLocaleString('vi-VN')} VND
-                        </strong>
-                    </div>
-                    
-                    <div className="order-items-list">
-                        <h4>Chi tiết đơn hàng:</h4>
-                        {/* 4. SỬA LỖI (Thêm &&): Kiểm tra list item */}
-                        {order.orderItems && order.orderItems.map((item) => (
-                            <div className="order-item" key={item.id}>
-                                <p>
-                                    (ID Sách: {item.bookId}) - SL: {item.quantity} x 
-                                    {/* 5. SỬA LỖI (Thêm || 0): Giá item */}
-                                    {(item.price || 0).toLocaleString('vi-VN')} VND
-                                </p>
-                            </div>
-                        ))}
-                    </div>
+        <div className="admin-user-container">
+            <h2 className="text-center mb-4 fw-bold text-uppercase">Quản lý Đơn Hàng</h2>
+
+            {loading ? <p className="text-center">Đang tải...</p> : (
+                <div className="table-card">
+                    <table className="table custom-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Khách hàng</th>
+                                <th>Ngày đặt</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái hiện tại</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.map(order => (
+                                <tr key={order.id}>
+                                    <td><strong>#{order.id}</strong></td>
+                                    <td>
+                                        <div>{order.user?.username}</div>
+                                        <small className="text-muted">{order.phone}</small>
+                                    </td>
+                                    <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                                    <td className="fw-bold text-danger">
+                                        {order.totalAmount.toLocaleString()} đ
+                                    </td>
+                                    <td>
+                                        <span className={getStatusBadge(order.status)}>{order.status}</span>
+                                    </td>
+                                    <td>
+                                        <div className="d-flex gap-2">
+                                            {/* Dropdown chọn trạng thái nhanh */}
+                                            <select 
+                                                className="form-select form-select-sm"
+                                                style={{width: '140px'}}
+                                                value={order.status}
+                                                onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                                            >
+                                                {statusOptions.map(st => (
+                                                    <option key={st} value={st}>{st}</option>
+                                                ))}
+                                            </select>
+
+                                            {/* Nút xem chi tiết */}
+                                            <Link to={`/order/${order.id}`} className="btn btn-sm btn-outline-info" title="Xem chi tiết">
+                                                <i className="fas fa-eye"></i>
+                                            </Link>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
-            ))}
+            )}
         </div>
     );
 };
