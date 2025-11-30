@@ -1,161 +1,165 @@
 /* src/components/AdminDashboard.css */
 
-/* 1. KHUNG BAO NGOÀI */
+/* 1. KHUNG CHÍNH */
 .dashboard-container {
     padding: 30px;
-    background-color: #f8f9fa;
-    min-height: auto; /* Để co giãn theo nội dung */
+    background-color: #f8f9fa; /* Màu nền xám nhẹ */
+    min-height: auto;
     font-family: 'Segoe UI', sans-serif;
 }
 
 .dashboard-title {
     font-weight: 800;
-    color: #6c757d; /* Text secondary */
+    color: #495057;
     margin-bottom: 30px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-/* 2. CÁC THẺ CARD CHUNG */
+/* 2. CARD CHUNG (Khung trắng bao quanh các phần) */
 .dashboard-card {
-    border: none;
+    background-color: white;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ */
     height: 100%;
     overflow: hidden;
-    background-color: white;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s;
 }
 
 .dashboard-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px); /* Hiệu ứng nổi lên khi hover */
 }
 
-/* 3. CARD TỔNG DOANH THU (BÊN TRÁI) */
-.revenue-card {
-    /* Gradient xanh đẹp mắt */
-    background: linear-gradient(135deg, #0061f2 0%, #00ba88 100%);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+/* 3. CÁC THẺ THÔNG SỐ (Hàng trên cùng) */
+.stat-card {
+    padding: 25px;
     text-align: center;
-    padding: 40px 20px;
+    position: relative;
+    /* Border left dày tạo điểm nhấn */
+    border-left-width: 5px;
+    border-left-style: solid;
 }
 
-.revenue-icon-circle {
-    background: rgba(255, 255, 255, 0.2);
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    backdrop-filter: blur(5px);
-}
+/* Màu sắc riêng cho từng thẻ */
+.stat-card.blue { border-left-color: #0061f2; }
+.stat-card.green { border-left-color: #00ba88; }
+.stat-card.yellow { border-left-color: #f39c12; }
+.stat-card.red { border-left-color: #e74c3c; }
 
-.revenue-title {
+.stat-label {
+    color: #6c757d;
     text-transform: uppercase;
-    opacity: 0.85;
-    font-weight: 600;
-    font-size: 1rem;
-}
-
-.revenue-value {
-    font-weight: 800;
-    font-size: 3rem;
-    margin: 10px 0;
-}
-
-.revenue-subtitle {
-    margin-bottom: 0;
-    opacity: 0.8;
-    font-size: 0.95rem;
-}
-
-.revenue-divider {
-    width: 60%;
-    border-color: rgba(255, 255, 255, 0.4);
-    margin: 25px 0;
-}
-
-.btn-report {
-    background-color: #f8f9fa;
-    color: #0061f2;
+    font-size: 0.85rem;
     font-weight: 700;
-    padding: 10px 25px;
-    border-radius: 50px;
-    border: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: all 0.3s;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
 }
 
-.btn-report:hover {
-    background-color: white;
-    transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0;
 }
 
-/* 4. CARD BIỂU ĐỒ (BÊN PHẢI) */
+/* Màu chữ số liệu */
+.text-primary-custom { color: #0061f2; }
+.text-success-custom { color: #00ba88; }
+.text-warning-custom { color: #f39c12; }
+.text-danger-custom { color: #e74c3c; }
+
+/* 4. HEADER CỦA BIỂU ĐỒ & BẢNG */
 .chart-header {
-    background-color: white;
-    padding: 20px 25px;
+    padding: 15px 20px;
     border-bottom: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #fff;
 }
 
 .chart-title {
+    font-size: 1.1rem;
     font-weight: 700;
     margin: 0;
-    color: #333;
+    color: #343a40;
 }
 
 .chart-note {
     font-size: 0.85rem;
-    color: #6c757d;
+    color: #adb5bd;
     font-style: italic;
 }
 
 .chart-body {
     padding: 20px;
-    height: 450px; /* Chiều cao cố định quan trọng cho Recharts */
     width: 100%;
+    /* Chiều cao cố định quan trọng cho Recharts */
+    height: 400px; 
 }
 
-/* 5. CUSTOM TOOLTIP (STYLE CHO TOOLTIP BIỂU ĐỒ) */
+/* 5. TOOLTIP TÙY CHỈNH (Khi rê chuột vào biểu đồ) */
 .custom-tooltip {
-    background-color: rgba(0, 0, 0, 0.85);
-    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.85); /* Nền đen mờ */
+    padding: 12px;
     border-radius: 8px;
     color: white;
-    border: 1px solid #555;
+    border: 1px solid #444;
     font-size: 0.9rem;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     min-width: 180px;
 }
 
 .tooltip-header {
     font-weight: bold;
-    color: #ffeb3b; /* Màu vàng nổi bật */
+    color: #ffeb3b; /* Màu vàng */
     border-bottom: 1px solid rgba(255,255,255,0.2);
-    padding-bottom: 8px;
+    padding-bottom: 5px;
     margin-bottom: 8px;
     text-align: center;
 }
 
-.tooltip-item {
-    margin: 5px 0;
+.tooltip-row {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    margin-bottom: 4px;
 }
 
-/* Màu sắc text trong tooltip */
-.text-profit { color: #ffafcc; } /* Hồng */
-.text-cost { color: #feca57; }   /* Vàng */
-.text-revenue { color: #54a0ff; } /* Xanh */
+/* 6. BẢNG TOP SÁCH */
+.table-container {
+    padding: 0;
+}
+
+.rank-badge {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+    margin: 0 auto;
+}
+
+.rank-1 { background-color: #ffc107; color: #212529; box-shadow: 0 2px 5px rgba(255, 193, 7, 0.4); } /* Vàng */
+.rank-other { background-color: #e9ecef; color: #495057; } /* Xám */
+
+.status-hot {
+    background-color: #ffe5e5;
+    color: #d63031;
+    border: 1px solid #fab1a0;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.status-stable {
+    background-color: #e3f9e5;
+    color: #27ae60;
+    border: 1px solid #b7e4c7;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}

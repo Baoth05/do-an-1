@@ -4,40 +4,33 @@ import {
     ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, 
     Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell 
 } from 'recharts';
-import './AdminDashboard.css';
+import './AdminDashboard.css'; // Import file CSS đã tách
 
 const AdminDashboard = () => {
-    // State lưu trữ tất cả dữ liệu thống kê
     const [stats, setStats] = useState({ 
         totalRevenue: 0, 
         totalOrders: 0, 
         totalBooksSold: 0, 
         totalUsers: 0,
-        topSellingBooks: [],    // Danh sách Top sách
-        orderStatusCounts: {}   // Tỷ lệ trạng thái đơn
+        topSellingBooks: [],
+        orderStatusCounts: {}
     });
     
-    const [chartData, setChartData] = useState([]); // Dữ liệu biểu đồ cột/đường
-    const [pieData, setPieData] = useState([]);     // Dữ liệu biểu đồ tròn
+    const [chartData, setChartData] = useState([]);
+    const [pieData, setPieData] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Màu cho biểu đồ tròn
     const PIE_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4757'];
 
     useEffect(() => {
-        // Gọi song song 2 API để lấy đủ dữ liệu
-        // 1. getDashboardStats: Lấy Top sách, Tỷ lệ đơn, Tổng số
-        // 2. getAllOrders: Lấy danh sách đơn để tự tính biểu đồ doanh thu theo tháng
         Promise.all([
             OrderService.getDashboardStats(),
             OrderService.getAllOrders()
         ]).then(([statsRes, ordersRes]) => {
             
-            // --- XỬ LÝ DỮ LIỆU TỪ statsRes (Top sách, Pie chart...) ---
             const statData = statsRes.data;
             setStats(statData);
 
-            // Chuyển đổi orderStatusCounts sang định dạng PieChart
             if (statData.orderStatusCounts) {
                 const pData = Object.keys(statData.orderStatusCounts).map(key => ({
                     name: key,
@@ -46,10 +39,7 @@ const AdminDashboard = () => {
                 setPieData(pData);
             }
 
-            // --- XỬ LÝ DỮ LIỆU TỪ ordersRes (Biểu đồ doanh thu tháng) ---
             const orders = ordersRes.data || [];
-            
-            // Tạo khung 12 tháng rỗng
             const monthlyStats = Array.from({ length: 12 }, (_, index) => {
                 const date = new Date(0, index);
                 return {
@@ -63,7 +53,6 @@ const AdminDashboard = () => {
             orders.forEach(order => {
                 if (order.orderDate) {
                     const dateObj = new Date(order.orderDate);
-                    // Chỉ tính năm nay
                     if (dateObj.getFullYear() === currentYear) {
                         const monthIndex = dateObj.getMonth();
                         monthlyStats[monthIndex].revenue += (order.totalAmount || 0);
@@ -71,7 +60,6 @@ const AdminDashboard = () => {
                 }
             });
 
-            // Tính Chi phí (70%) & Lợi nhuận
             const finalChartData = monthlyStats.map(item => {
                 const cost = item.revenue * 0.7;
                 const profit = item.revenue - cost;
@@ -91,23 +79,23 @@ const AdminDashboard = () => {
         });
     }, []);
 
-    // Tooltip cho Biểu đồ Cột/Đường
+    // Custom Tooltip (Sử dụng class CSS thay vì style inline)
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
                 <div className="custom-tooltip">
                     <p className="tooltip-header">{`Tháng: ${label}`}</p>
-                    <div className="tooltip-item text-profit">
+                    <div className="tooltip-row" style={{color: '#ffafcc'}}>
                         <span>■ Lợi nhuận:</span>
-                        <strong>{payload[0].value.toLocaleString('vi-VN')} đ</strong>
+                        <b>{payload[0].value.toLocaleString()} đ</b>
                     </div>
-                    <div className="tooltip-item text-cost">
+                    <div className="tooltip-row" style={{color: '#feca57'}}>
                         <span>● Chi phí:</span>
-                        <strong>{payload[1].value.toLocaleString('vi-VN')} đ</strong>
+                        <b>{payload[1].value.toLocaleString()} đ</b>
                     </div>
-                    <div className="tooltip-item text-revenue">
+                    <div className="tooltip-row" style={{color: '#54a0ff'}}>
                         <span>● Doanh thu:</span>
-                        <strong>{payload[2].value.toLocaleString('vi-VN')} đ</strong>
+                        <b>{payload[2].value.toLocaleString()} đ</b>
                     </div>
                 </div>
             );
@@ -123,37 +111,45 @@ const AdminDashboard = () => {
                 <i className="fas fa-chart-pie me-2"></i> Báo Cáo Kinh Doanh {new Date().getFullYear()}
             </h3>
 
-            {/* --- HÀNG 1: 4 THẺ THÔNG SỐ (Tổng quan) --- */}
+            {/* --- HÀNG 1: 4 THẺ THÔNG SỐ --- */}
             <div className="row g-4 mb-4">
                 <div className="col-md-3">
-                    <div className="dashboard-card p-4 text-center" style={{borderLeft: '5px solid #0061f2'}}>
-                        <h6 className="text-muted text-uppercase mb-2" style={{fontSize:'0.85rem', fontWeight:'bold'}}>Doanh Thu</h6>
-                        <h4 className="fw-bold text-primary mb-0">{(stats.totalRevenue || 0).toLocaleString()} đ</h4>
+                    <div className="dashboard-card stat-card blue">
+                        <h6 className="stat-label">Doanh Thu</h6>
+                        <h4 className="stat-value text-primary-custom">
+                            {(stats.totalRevenue || 0).toLocaleString()} đ
+                        </h4>
                     </div>
                 </div>
                 <div className="col-md-3">
-                    <div className="dashboard-card p-4 text-center" style={{borderLeft: '5px solid #00ba88'}}>
-                        <h6 className="text-muted text-uppercase mb-2" style={{fontSize:'0.85rem', fontWeight:'bold'}}>Đơn Hàng</h6>
-                        <h4 className="fw-bold text-success mb-0">{stats.totalOrders}</h4>
+                    <div className="dashboard-card stat-card green">
+                        <h6 className="stat-label">Đơn Hàng</h6>
+                        <h4 className="stat-value text-success-custom">
+                            {stats.totalOrders}
+                        </h4>
                     </div>
                 </div>
                 <div className="col-md-3">
-                    <div className="dashboard-card p-4 text-center" style={{borderLeft: '5px solid #f39c12'}}>
-                        <h6 className="text-muted text-uppercase mb-2" style={{fontSize:'0.85rem', fontWeight:'bold'}}>Sách Đã Bán</h6>
-                        <h4 className="fw-bold text-warning mb-0">{stats.totalBooksSold}</h4>
+                    <div className="dashboard-card stat-card yellow">
+                        <h6 className="stat-label">Sách Đã Bán</h6>
+                        <h4 className="stat-value text-warning-custom">
+                            {stats.totalBooksSold}
+                        </h4>
                     </div>
                 </div>
                 <div className="col-md-3">
-                    <div className="dashboard-card p-4 text-center" style={{borderLeft: '5px solid #e74c3c'}}>
-                        <h6 className="text-muted text-uppercase mb-2" style={{fontSize:'0.85rem', fontWeight:'bold'}}>Khách Hàng</h6>
-                        <h4 className="fw-bold text-danger mb-0">{stats.totalUsers}</h4>
+                    <div className="dashboard-card stat-card red">
+                        <h6 className="stat-label">Khách Hàng</h6>
+                        <h4 className="stat-value text-danger-custom">
+                            {stats.totalUsers}
+                        </h4>
                     </div>
                 </div>
             </div>
 
-            {/* --- HÀNG 2: BIỂU ĐỒ TÀI CHÍNH & TỶ LỆ ĐƠN --- */}
+            {/* --- HÀNG 2: BIỂU ĐỒ --- */}
             <div className="row g-4 mb-4">
-                {/* Cột trái: Biểu đồ doanh thu (Chiếm 8 phần) */}
+                {/* Biểu đồ Doanh thu (Trái) */}
                 <div className="col-lg-8">
                     <div className="dashboard-card">
                         <div className="chart-header">
@@ -181,7 +177,7 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                {/* Cột phải: Biểu đồ Tròn (Pie Chart) - Tỷ lệ đơn hàng */}
+                {/* Biểu đồ Tròn (Phải) */}
                 <div className="col-lg-4">
                     <div className="dashboard-card">
                         <div className="chart-header">
@@ -213,21 +209,21 @@ const AdminDashboard = () => {
                 </div>
             </div>
 
-            {/* --- HÀNG 3: TOP 5 SÁCH BÁN CHẠY --- */}
+            {/* --- HÀNG 3: BẢNG TOP SÁCH --- */}
             <div className="row">
                 <div className="col-12">
-                    <div className="dashboard-card">
-                        <div className="chart-header d-flex justify-content-between align-items-center">
-                            <h5 className="chart-title">🔥 Top 5 Sách Bán Chạy Nhất (Kế hoạch nhập hàng)</h5>
+                    <div className="dashboard-card table-container">
+                        <div className="chart-header">
+                            <h5 className="chart-title">🔥 Top 5 Sách Bán Chạy Nhất</h5>
                         </div>
                         <div className="p-3">
                             <table className="table table-hover align-middle mb-0">
                                 <thead className="table-light">
                                     <tr>
-                                        <th style={{width: '50px'}}>#</th>
+                                        <th style={{width: '60px', textAlign: 'center'}}>#</th>
                                         <th>Tên Sách</th>
                                         <th className="text-center">Đã bán</th>
-                                        <th className="text-end">Tổng doanh thu</th>
+                                        <th className="text-end">Doanh thu</th>
                                         <th className="text-center">Đánh giá</th>
                                     </tr>
                                 </thead>
@@ -236,20 +232,19 @@ const AdminDashboard = () => {
                                         stats.topSellingBooks.map((book, index) => (
                                             <tr key={index}>
                                                 <td>
-                                                    <span className={`badge rounded-circle ${index === 0 ? 'bg-warning text-dark' : 'bg-secondary'}`} 
-                                                          style={{width:'25px', height:'25px', display:'flex', alignItems:'center', justifyContent:'center'}}>
+                                                    <div className={`rank-badge ${index === 0 ? 'rank-1' : 'rank-other'}`}>
                                                         {index + 1}
-                                                    </span>
+                                                    </div>
                                                 </td>
-                                                <td className="fw-bold text-primary">{book.title}</td>
+                                                <td className="fw-bold text-dark">{book.title}</td>
                                                 <td className="text-center fw-bold fs-5">{book.soldQuantity}</td>
                                                 <td className="text-end text-success fw-bold">
                                                     {book.totalRevenue.toLocaleString()} đ
                                                 </td>
                                                 <td className="text-center">
                                                     {book.soldQuantity > 5 ? 
-                                                        <span className="badge bg-danger">HOT TREND</span> : 
-                                                        <span className="badge bg-success">Ổn định</span>
+                                                        <span className="status-hot">HOT TREND</span> : 
+                                                        <span className="status-stable">Ổn định</span>
                                                     }
                                                 </td>
                                             </tr>
