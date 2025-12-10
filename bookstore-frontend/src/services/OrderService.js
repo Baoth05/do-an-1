@@ -39,6 +39,10 @@ const updateOrderStatus = (id, status) => {
 const getDashboardStats = () => {
     return axios.get(API_URL + "/admin/stats", { headers: authHeader() });
 };
+const cancelOrder = (id) => {
+    return axios.put(API_URL + "/" + id + "/cancel", {}, { headers: authHeader() });
+};
+
 
 const OrderService = {
     createOrder,
@@ -47,6 +51,7 @@ const OrderService = {
     getOrderById,
     updateOrderStatus,
     getDashboardStats,
+    cancelOrder,
 };
 
 export default OrderService;

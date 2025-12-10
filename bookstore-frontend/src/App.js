@@ -20,6 +20,7 @@ import AdminUsers from './components/AdminUsers';
 import OrderDetail from './components/OrderDetail';
 import UserProfile from './components/UserProfile';
 import AdminDashboard from './components/AdminDashboard';
+import Contact from './components/Contact';
 
 const AppContent = () => {
     // Đã xóa useLocation vì không cần dùng ở đây nữa
@@ -59,6 +60,8 @@ const AppContent = () => {
                     <Route path="/order-detail/:id" element={<OrderDetail />} />
                     <Route path="/profile" element={<UserProfile />} />
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/contact" element={<Contact />} />
+                    
                     
                 </Routes>
                 

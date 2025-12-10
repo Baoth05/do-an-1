@@ -1,4 +1,5 @@
 /* Dùng chung style nền của Cart */
+
 .history-container {
     max-width: 900px;
     margin: 2rem auto;
@@ -63,4 +64,36 @@
 .order-item p {
     margin: 0.5rem 0;
     font-size: 0.95rem;
+}
+/* ... (Giữ nguyên toàn bộ CSS cũ của bạn ở trên) ... */
+
+/* ================================================= */
+/* === PHẦN SỬA MỚI: TÙY CHỈNH CỘT HÀNH ĐỘNG === */
+/* ================================================= */
+
+/* 1. Kéo dài khung hành động (Cột cuối cùng của bảng) */
+/* Chọn cột cuối cùng trong phần tiêu đề (th) và dữ liệu (td) */
+.table th:last-child, 
+.table td:last-child {
+    width: 250px;      /* Đặt độ rộng cố định lớn hơn để cột rộng ra */
+    min-width: 220px;  /* Đảm bảo cột không bị co nhỏ quá mức trên màn hình bé */
+    text-align: center; /* Căn giữa nội dung văn bản và nút bấm */
+    vertical-align: middle; /* Căn giữa theo chiều dọc */
+}
+
+/* 2. Giãn cách nút Chi tiết và Hủy đơn */
+/* Chọn thẻ div bao quanh 2 nút (thường có class d-flex trong React) nằm trong cột cuối cùng */
+.table td:last-child > div {
+    display: flex; /* Sử dụng Flexbox để dàn nút */
+    justify-content: center; /* Căn giữa các nút trong ô */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 20px !important; /* Quan trọng: Tăng khoảng cách giữa 2 nút lên 20px */
+}
+
+/* 3. Làm nút bấm to và đẹp hơn chút (Tùy chọn) */
+/* Áp dụng cho các nút nhỏ (btn-sm) trong bảng */
+.btn-sm {
+    padding: 6px 15px; /* Tăng vùng đệm bên trong để nút to hơn, dễ bấm */
+    font-size: 0.9rem; /* Cỡ chữ vừa phải */
+    white-space: nowrap; /* Ngăn chữ trong nút bị xuống dòng */
 }

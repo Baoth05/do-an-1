@@ -20,9 +20,9 @@ const Footer = () => {
                 {/* Cột 2: Liên hệ */}
                 <div className="footer-section contact">
                     <h3 className="footer-title">Liên hệ</h3>
-                    <p>Email: contact@bookstore.com</p>
-                    <p>Điện thoại: (028) 1234 5678</p>
-                    <p>Địa chỉ: 123 Nguyễn Văn Cừ, P.4, Q.5, TP.HCM</p>
+                    <p>Email: Baotruonghoang01@gmail.com</p>
+                    <p>Điện thoại: (097) 169 4448</p>
+                    <p>Địa chỉ: 123 Nguyễn Văn Cừ, P.4, TP Cần Thơ</p>
                 </div>
 
                 {/* Cột 3: Liên kết nhanh */}
@@ -39,7 +39,8 @@ const Footer = () => {
             
             {/* Dòng Copyright ở dưới cùng */}
             <div className="footer-bottom">
-                <p>&copy; 2025 Bookstore | Thiết kế bởi Tên Của Bạn</p>
+                <p>&copy; 2025 Bookstore | Thiết kế bởi Trương Hoàng Bảo
+                </p>
             </div>
         </footer>
     );

@@ -289,6 +289,67 @@
     background: #f1f3f5;
     border-color: #ced4da;
 }
+.btn-sm {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.form-select-sm {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border-color: #ced4da;
+    font-size: 0.9rem;
+}
+.form-select-sm:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+.btn-detail {
+    background-color: #e0f7fa; /* Nền xanh ngọc nhạt */
+    color: #006064;            /* Chữ xanh đậm */
+    border: 1px solid #b2ebf2; /* Viền xanh nhẹ */
+    
+    padding: 6px 12px;
+    border-radius: 6px;        /* Bo góc mềm mại */
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;     /* Bỏ gạch chân */
+    
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;                  /* Khoảng cách giữa Icon và Chữ */
+    transition: all 0.2s ease;
+    white-space: nowrap;       /* Không cho chữ xuống dòng */
+    cursor: pointer;
+}
+.btn-detail:hover {
+    background-color: #b2ebf2; /* Đậm màu hơn chút */
+    color: #004d40;
+    transform: translateY(-2px); /* Bay lên nhẹ */
+    box-shadow: 0 3px 6px rgba(0, 96, 100, 0.15); /* Đổ bóng nhẹ */
+}
+
+/* Hiệu ứng khi bấm */
+.btn-detail:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Icon bên trong nút */
+.btn-detail i {
+    font-size: 0.9rem;
+}
 
 /* --- ANIMATIONS --- */
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

@@ -21,7 +21,7 @@
     color: #2c3e50;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: 2rem;
+    font-size: 2rem;    
 }
 
 /* 2. THẺ SÁCH (CARD) */
@@ -233,3 +233,72 @@
 }
 
 .message-error { color: #dc3545; }
+/* Định kiểu cho vùng chứa banner */
+.banner-container {
+    position: relative; /* Để có thể định vị nội dung con tuyệt đối bên trong */
+    width: 100%;
+    height: 450px; /* Chiều cao cố định cho banner */
+    overflow: hidden; /* Ẩn phần hình ảnh tràn ra ngoài */
+    margin-bottom: 40px; /* Khoảng cách dưới banner */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Đổ bóng nhẹ */
+}
+
+/* Định kiểu cho hình ảnh banner */
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo hình ảnh phủ kín khung mà không bị méo */
+    object-position: center; /* Căn giữa hình ảnh */
+    filter: brightness(0.7); /* Làm tối hình ảnh đi 30% để văn bản dễ đọc hơn */
+}
+
+/* Định kiểu cho nội dung văn bản trên banner */
+.banner-content {
+    position: absolute; /* Định vị tuyệt đối để nằm trên hình ảnh */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Căn giữa nội dung cả theo chiều dọc và ngang */
+    text-align: center;
+    color: white; /* Màu chữ trắng */
+    width: 80%; /* Chiều rộng tối đa của nội dung */
+    z-index: 2; /* Đảm bảo nội dung nằm trên hình ảnh */
+}
+
+/* Định kiểu cho tiêu đề banner */
+.banner-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5); /* Tạo bóng cho chữ */
+    text-transform: uppercase; /* Chuyển thành chữ in hoa */
+    letter-spacing: 2px; /* Khoảng cách giữa các ký tự */
+}
+
+/* Định kiểu cho phụ đề banner */
+.banner-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    font-weight: 500;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+
+/* Định kiểu cho nút "Khám phá ngay" */
+.btn-explore {
+    padding: 12px 35px;
+    background-color: #007bff; /* Màu nền xanh */
+    color: white;
+    border: none;
+    border-radius: 50px; /* Bo tròn nút */
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer; /* Con trỏ chuột dạng tay khi di vào */
+    transition: all 0.3s; /* Hiệu ứng chuyển đổi mượt mà */
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4); /* Đổ bóng cho nút */
+}
+
+/* Hiệu ứng khi di chuột vào nút */
+.btn-explore:hover {
+    background-color: #0056b3; /* Màu nền tối hơn */
+    transform: translateY(-3px); /* Nút di chuyển lên trên nhẹ */
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6); /* Bóng đổ đậm hơn */
+}

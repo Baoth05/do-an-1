@@ -37,7 +37,8 @@ const OrderDetail = () => {
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2 className="checkout-title mb-0">Chi Tiết Đơn Hàng #{order.id}</h2>
                 <Link to="/my-orders" className="btn btn-outline-secondary">
-                    <i className="fas fa-arrow-left me-2"></i> Quay lại
+                    
+                    <button><i className="fas fa-arrow-left me-2"></i> Quay lại</button>
                 </Link>
             </div>
 

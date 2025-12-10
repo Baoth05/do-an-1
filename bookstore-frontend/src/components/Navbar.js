@@ -59,11 +59,13 @@ const Navbar = () => {
                                 Quản lý Đơn Hàng
                             </Link>
                         </li>
+                        
                         <li className="nav-item">
                             <Link to={"/admin/users"} className="nav-link">
                                 Quản Lý Khách Hàng
                             </Link>
                         </li>
+                        
                         {/* Admin có nút Đăng xuất riêng cho tiện */}
                         <li className="nav-item">
                             <button onClick={logOut} className="nav-link-button" style={{marginLeft: '10px'}}>
@@ -73,7 +75,7 @@ const Navbar = () => {
                     </>
                 )}
 
-                {/* === PHẦN CỦA USER (KHÔNG PHẢI ADMIN) === */}
+                {/* === PHẦN CỦA USER (KHÔNG PHẢI ADMIN) === */}    
                 {currentUser && !showAdminBoard ? (
                     <div className="nav-item-user">
                         
@@ -88,7 +90,10 @@ const Navbar = () => {
                                 <span className="badge-cart">{totalQuantity}</span>
                             )}
                         </Link>
-                        
+                            <Link to="/contact" className='nav-link'>
+                            Liên Hệ
+                            </Link>
+                            
                         {/* TÀI KHOẢN & ĐĂNG XUẤT */}
                         <Link to="/profile" className="nav-link" >
                             Tài khoản

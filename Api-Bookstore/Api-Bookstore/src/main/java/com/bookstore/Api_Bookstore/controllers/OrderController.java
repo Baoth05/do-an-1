@@ -233,4 +233,54 @@ public class OrderController {
 
         return ResponseEntity.ok(stats);
     }
+    // ... Các import cũ ...
+
+    // === API HỦY ĐƠN HÀNG (Dành cho Khách hàng) ===
+    @PutMapping("/{id}/cancel")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')") // Admin cũng có thể hủy giúp khách
+    @Transactional // Để đảm bảo cộng kho và đổi trạng thái cùng thành công
+    public ResponseEntity<?> cancelOrder(@PathVariable Long id) {
+        try {
+            // 1. Tìm đơn hàng
+            Order order = orderRepository.findById(id)
+                    .orElseThrow(() -> new NotFoundException("Không tìm thấy đơn hàng ID: " + id));
+
+            // 2. Kiểm tra quyền (Chỉ chủ đơn hàng hoặc Admin mới được hủy)
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+            boolean isAdmin = userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+            if (order.getUser().getId() != userDetails.getId() && !isAdmin) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Bạn không có quyền hủy đơn hàng này.");
+            }
+
+            // 3. Kiểm tra trạng thái (Chỉ hủy được khi 'Chờ xác nhận')
+            if (!order.getStatus().equals("Chờ xác nhận")) {
+                return ResponseEntity.badRequest().body("Không thể hủy đơn hàng đã được xử lý hoặc đang giao.");
+            }
+
+            // 4. HOÀN TRẢ SỐ LƯỢNG VÀO KHO (QUAN TRỌNG)
+            for (OrderItem item : order.getOrderItems()) {
+                Book book = bookRepository.findById(item.getBookId()).orElse(null);
+                if (book != null) {
+                    book.setStockQuantity(book.getStockQuantity() + item.getQuantity());
+
+                    // Nếu sách đang trạng thái "Hết hàng" mà khách hủy đơn -> Cập nhật lại thành "Còn hàng"
+                    if (book.getStatus().equals("Hết hàng") && book.getStockQuantity() > 0) {
+                        book.setStatus("Còn hàng"); // Hoặc trạng thái mặc định của bạn
+                    }
+                    bookRepository.save(book);
+                }
+            }
+
+            // 5. Cập nhật trạng thái đơn
+            order.setStatus("Đã hủy");
+            orderRepository.save(order);
+
+            return ResponseEntity.ok("Đã hủy đơn hàng thành công.");
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Lỗi: " + e.getMessage());
+        }
+    }
 }
